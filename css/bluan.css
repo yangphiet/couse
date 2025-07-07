@@ -1,0 +1,57 @@
+/* Định dạng box chứa tất cả bình luận */
+.mb {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Định dạng tiêu đề "Bình luận" */
+.box_title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Định dạng nội dung bình luận */
+.comment {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+/* Định dạng nội dung bình luận và thời gian */
+.comment .author {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment .timestamp {
+    color: #888;
+}
+/* Định dạng thanh button */
+.comment-button {
+    background-color: #4caf50; /* Màu nền */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px; /* Góc bo tròn */
+    cursor: pointer;
+}
+
+.comment-button:hover {
+    background-color: #45a049; /* Màu nền khi di chuột qua */
+}
+
+/* Định dạng thanh ghi bình luận */
+.comment-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Góc bo tròn */
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: #4caf50; /* Màu viền khi đang focus */
+}
