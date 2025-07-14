@@ -2,7 +2,6 @@
         <div class="containerr" id="containerr">
             <div class="form-containerr sign-in">
                 <form action="index.php?act=forgot_password" method="post" id="loginForm">
-
                     <h1>Quên mật khẩu</h1>
                     <div class="social-icons">
                         <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -19,27 +18,18 @@
                     }
                     ?>
                 </p>
-
                     <a style=" margin: 2px;" href="index.php?act=login">Sign In</a>
-                    <!-- <a style="margin: 2px;" href="index.php?act=doimatkhau">Change Password</a> -->
-
-                    <!-- Sửa thành -->
                     <button type="submit" name="forgot_password">Submit</button>
-
-                </form>
-              
+                </form>  
             </div>
             <div class="toggle-containerr">
                 <div class="toggle">
                     <div class="toggle-panel toggle-right">
                         <h1>Hello, Friend!</h1>
                         <p>Có vẻ như là bạn đã quên mật khẩu của mình nhỉ !</p>
-
                     </div>
                 </div>
             </div>
         </div>
-      
-
     </body>
 

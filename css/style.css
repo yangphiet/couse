@@ -254,7 +254,7 @@ margin-left: 0px;
 }
 /* scrollUp */
 #scrollUp {
-	background: #fe8366;
+	background: #64b7f0;
 	height: 45px;
 	width: 45px;
 	right: 50px;
@@ -1061,7 +1061,7 @@ border: 2px solid #fe8366;
     color: #777;
 }
 .btn.ss-btn {
-    background: #fe8366;
+    background: #00838F;
     border-radius: 10px;
     color: #FFF;
     padding:20px 30px;
@@ -7143,7 +7143,7 @@ p.checkout-coupon input[type="text"] {
 }
 .project-detail .text-column .inner-column .dropcap{
     float: left;
-    background: #fe8366 0% 0% no-repeat padding-box;
+    background: #00838F 0% 0% no-repeat padding-box;
     border-radius: 20px;
     padding: 30px;
     color: #FFFFFF;
@@ -7278,7 +7278,7 @@ display: inline-block;
 }
 
 .project-detail .lower-content th {
-    background: #fe8366;
+    background: #00838F;
     color: #fff;
 }
 
@@ -9079,7 +9079,7 @@ div.single-cta:last-child {
 .couress-box .price {
     position: absolute;
     top: -70px;
-    background: #fe8366;
+    background: #0268b2;
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -9146,7 +9146,7 @@ div.single-cta:last-child {
     height: 25px;
 }
 .danhmuc_option {
-    background-color: #fe8366;
+    background-color: #0268b2;
     color: black;
     border: none;
     width: 90px;

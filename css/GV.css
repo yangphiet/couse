@@ -1,0 +1,130 @@
+/* Cấu trúc tổng thể */
+.container {
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Tiêu đề */
+h1, h2 {
+  text-align: center;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Label và form field */
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #34495e;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="file"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Các khối nhóm bài học, câu hỏi, flashcard */
+.lesson-block,
+.quiz-block,
+.flashcard-block {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+  border-left: 5px solid #3498db;
+}
+
+.lesson-block label,
+.quiz-block label,
+.flashcard-block label {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* Nút */
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-success {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #1e8449;
+}
+
+.btn-secondary {
+  background-color: #7f8c8d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #616a6b;
+}
+
+.btn-info {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #2980b9;
+}
+
+.btn-warning {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #e67e22;
+}
+
+/* Các nhóm field theo chiều ngang */
+.flex-row {
+  display: flex;
+  gap: 15px;
+}
+
+.flex-row > div {
+  flex: 1;
+}
+
+/* Khoảng cách cuối form */
+form > div:last-child {
+  margin-bottom: 0;
+}

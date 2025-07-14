@@ -33,11 +33,12 @@
 
 //     return $invoice;
 // }
-function addbill($user_id, $full_name, $email, $phone, $course_name, $course_price, $pttt, $instructor, $classname,$thoigian, $time_start, $time_end,$timestamp,$trangthai) {
-    $sql = "INSERT INTO bills(user_id, full_name, email, phone, course_name, course_price, pttt, instructor, classname,thoigian, time_start, time_end,timestamp ,trangthai) VALUES ('$user_id','$full_name','$email', '$phone', '$course_name', '$course_price', '$pttt', '$instructor', '$classname','$thoigian', '$time_start', '$time_end', '$timestamp' ,'$trangthai')";
-        pdo_execute($sql);
-   
+function addbill($user_id, $full_name, $email, $phone, $course_name, $course_price, $pttt, $instructor, $classname, $thoigian, $time_start, $time_end, $timestamp, $trangthai, $course_id) {
+    $sql = "INSERT INTO bills(user_id, full_name, email, phone, course_name, course_price, pttt, instructor, classname, thoigian, time_start, time_end, timestamp, trangthai, course_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    pdo_execute($sql, $user_id, $full_name, $email, $phone, $course_name, $course_price, $pttt, $instructor, $classname, $thoigian, $time_start, $time_end, $timestamp, $trangthai, $course_id);
 }
+
 function updatetrangthai( $newStatus ,$billId) {
     try {
         // Gọi hàm kết nối cơ sở dữ liệu

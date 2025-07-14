@@ -22,80 +22,53 @@ if (isset($_GET['act'])) {
     switch ($act) {
 
         case 'login':
-
-
             $isRegistrationSuccess = false;
-
             // Xử lý khi form được submit
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_POST["login"])) {
                     $username = $_POST["username"];
                     $password = $_POST["password"];
+                    $login_role = isset($_POST["role"]) ? $_POST["role"] : "user";
 
-                    // Sử dụng prepared statements để tránh SQL Injection
-                    $user = check_user($password, $username);
-
-if ($user) {
-    $_SESSION["logged_in"] = true;
-    $_SESSION["full_name"] = $user["full_name"];
-    $_SESSION["email"] = $user["email"];
-    $_SESSION["user_id"] = $user["user_id"];
-    $_SESSION["username"] = $user["username"];
-    $_SESSION["role"] = $user["role"];
-
-    // Điều hướng dựa vào vai trò
-    if ($_SESSION["role"] === "admin") {
-        header("Location: admin/index.php");
-    } else {
-        header("Location: index.php");
-    }
-    exit();
-} else {
-    // Nếu không phải user, kiểm tra teacher
-    $teacher = check_teacher($username, $password);
-
-    if ($teacher) {
-        $_SESSION["logged_in"] = true;
-        $_SESSION["full_name"] = $teacher["full_name"];
-        $_SESSION["email"] = $teacher["email"];
-        $_SESSION["user_id"] = $teacher["teacher_id"];
-        $_SESSION["username"] = $teacher["username"];
-        $_SESSION["role"] = $teacher["role"];
-
-        // Điều hướng tới trang giảng viên
-        header("Location: GV/index.php");
-        exit();
-    } else {
-        $error_message = "Email hoặc mật khẩu không hợp lệ";
-    }
-}
-
-
-                    if ($user) {
-                        $_SESSION["logged_in"] = true;
-                        $_SESSION["full_name"] = $user["full_name"];
-                        $_SESSION["email"] = $user["email"];
-                        // Đăng nhập thành công
-                        $_SESSION["user_id"] = $user["user_id"];
-                        $_SESSION["username"] = $user["username"];
-                        $_SESSION["role"] = $user["role"];
-
-                        // Redirect dựa vào vai trò của người dùng
-                        if (isset($_SESSION["role"]) && $_SESSION["role"] == "admin") {
-                            header("Location: admin/index.php");
+                    if ($login_role === "teacher") {
+                        $teacher = check_teacher($username, $password);
+                        if ($teacher && $teacher["role"] === "teacher") {
+                            $_SESSION["logged_in"] = true;
+                            $_SESSION["full_name"] = $teacher["full_name"];
+                            $_SESSION["email"] = $teacher["email"];
+                            $_SESSION["user_id"] = $teacher["teacher_id"];
+                            $_SESSION["username"] = $teacher["username"];
+                            $_SESSION["role"] = $teacher["role"];
+                            header("Location: GV/index.php");
+                            exit();
                         } else {
-                            header("Location: index.php");
+                            $error_message = "Sai tài khoản hoặc mật khẩu giáo viên!";
                         }
-                        exit();
                     } else {
-
-                        $error_message = "Email hoặc mật khẩu không hợp lệ";
+                        $user = check_user($username, $password, $login_role);
+                        if ($user && ($user["role"] === "user" || $user["role"] === "admin")) {
+                            $_SESSION["logged_in"] = true;
+                            $_SESSION["full_name"] = $user["full_name"];
+                            $_SESSION["email"] = $user["email"];
+                            $_SESSION["user_id"] = $user["user_id"];
+                            $_SESSION["username"] = $user["username"];
+                            $_SESSION["role"] = $user["role"];
+                            if ($_SESSION["role"] === "admin") {
+                                header("Location: admin/index.php");
+                            } else {
+                                header("Location: index.php");
+                            }
+                            exit();
+                        } else {
+                            $error_message = "Sai tài khoản hoặc mật khẩu học viên!";
+                        }
                     }
                 } elseif (isset($_POST["register"])) {
                     $email = $_POST["email"];
                     $username = $_POST["username"];
                     $password = $_POST["password"];
                     $full_name = $_POST["full_name"];
+                    $register_role = isset($_POST["register_role"]) ? $_POST["register_role"] : "user";
 
                     // Kiểm tra tính hợp lệ của dữ liệu đăng ký
                     if (empty($username) || empty($email) ||  empty($password) ||  empty($full_name)) {
@@ -104,18 +77,15 @@ if ($user) {
                         if (kiem_tra_ton_tai($username, $email)) {
                             $error_message = "Tên hoặc gmail đã được đăng kí";
                         } else {
-
-                            them_khach_hang($username, $full_name, $password, $email);
+                            them_khach_hang($username, $full_name, $password, $email, $register_role);
                             if($isRegistrationSuccess = true) {
-                            echo '<script>
-                            document.addEventListener("DOMContentLoaded", function () {
-                                alert("
-                                Đăng ký thành công! Bây giờ bạn có thể đăng nhập.");
-                                window.location.href = "index.php?act=login";
-                            });
-                          </script>';
-                        }
-                    
+                                echo '<script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    alert("Đăng ký thành công! Bây giờ bạn có thể đăng nhập.");
+                                    window.location.href = "index.php?act=login";
+                                });
+                                </script>';
+                            }
                         }
                     }
                 }
@@ -193,6 +163,28 @@ if ($user) {
             include "views/pay.php";
             break;
         case 'bill':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $userid = $_POST['user_id'];
+                $fullname = $_POST['full_name'];
+                $email = $_POST['email'];
+                $phone = $_POST['phone'];
+                $coursename = $_POST['course_name'];
+                $price = $_POST['course_price'];
+                $instructor = $_POST['instructor'];
+                $classname = $_POST['classname'];
+                $thoigian = $_POST['thoigian'];
+                $time_start = $_POST['time_start'];
+                $time_end = $_POST['time_end'];
+                $course_id = isset($_POST['course_id']) ? $_POST['course_id'] : null;
+                $pttt = isset($_POST['pttt']) ? $_POST['pttt'] : '';
+                $trangthai = 'Đã thanh toán';
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $timestamp =  date('Y-m-d H:i:s');
+                addbill($userid, $fullname, $email, $phone, $coursename, $price, $pttt, $instructor, $classname, $thoigian, $time_start, $time_end, $timestamp, $trangthai, $course_id);
+                // Redirect để tránh submit lại khi reload
+                header('Location: index.php?act=khdadangki&success=1');
+                exit();
+            }
             include "views/bill.php";
             break;
         case 'lienhe':
@@ -224,7 +216,9 @@ if ($user) {
                 $time_end = $_POST['time_end'];
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                 $timestamp =  date("Y-m-d H:i:s");
-                addbill($userid, $fullname, $email, $phone, $coursename, $price, $pttt, $instructor, $classname, $thoigian, $time_start, $time_end, $timestamp, $trangthai);
+                // Bổ sung tham số $course_id cho đúng định nghĩa hàm addbill
+                $course_id = isset($_POST['course_id']) ? $_POST['course_id'] : null;
+                addbill($userid, $fullname, $email, $phone, $coursename, $price, $pttt, $instructor, $classname, $thoigian, $time_start, $time_end, $timestamp, $trangthai, $course_id);
 
                 $thongbao = "Thêm thành công";
             }
@@ -234,22 +228,22 @@ if ($user) {
         case 'khdadangki':
 
             if (isset($_SESSION['username'])) {
-                // Viết câu truy vấn SQL để lấy user_id từ bảng users dựa trên username
+                // Lấy user_id từ username
                 $sql = "SELECT user_id FROM users WHERE username = ?";
-                // Gọi hàm pdo_query_one để thực hiện truy vấn
                 $userData = pdo_query_one($sql, $_SESSION['username']);
-                // Kiểm tra nếu có dữ liệu
                 if ($userData) {
                     $userId = $userData['user_id'];
+                    // Lấy danh sách khóa học đã đăng ký, đảm bảo có course_id
+                    $courses_dki = get_courses_dki($userId);
                 } else {
                     echo "Không tìm thấy user_id cho username: " . $_SESSION['username'];
+                    $courses_dki = [];
                 }
-                $courses_dki = get_courses_dki($userId);
             } else {
                 echo "Session 'username' không tồn tại.";
+                $courses_dki = [];
             }
-
-            // echo $userId;
+            // Đảm bảo truyền $courses_dki sang view
             include "views/khdadangki.php";
             break;
 

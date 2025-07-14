@@ -3,9 +3,8 @@
 include "../model/pdo.php";
 include "../model/danhmuc.php";
 include "../model/khoahoc.php";
-include "../model/taikhoan.php";
-include "../model/binhluan.php";
-include "../model/bill.php";
+include "../model/lesson.php";
+include "../model/quiz.php";    
 
 include "header.php";
 
@@ -22,7 +21,6 @@ if (isset($_GET['act'])) {
 
            
             // khoá học
-
         case 'addkh':
             if (isset($_POST['themmoi']) && $_POST['themmoi']) {
                 $ten_kh = $_POST['ten_kh'];
@@ -30,7 +28,7 @@ if (isset($_GET['act'])) {
                 $don_gia = $_POST['don_gia'];
                 $danhmuc = $_POST['danhmuc'];
                 $buoihoc = $_POST['buoi_hoc'];
-                $giangvien = $_POST['giang_vien'];
+                $teacher_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0;
                 $thoigian = $_POST['thoigian'];
                 $intro = $_POST['intro'];
                 $time_start = $_POST['time_start'];
@@ -40,11 +38,13 @@ if (isset($_GET['act'])) {
                 $hinh = $file['name'];
                 move_uploaded_file($file['tmp_name'], "./image/" . $hinh);
 
-                add_course($ten_kh, $mo_ta, $hinh, $giangvien, $don_gia, $danhmuc, $buoihoc, $thoigian, $intro, $time_start, $classname, $time_end);
-                $thongbao = "Thêm thành công";
+                add_course($ten_kh, $mo_ta, $hinh, $teacher_id, $don_gia, $danhmuc, $buoihoc, $thoigian, $intro, $time_start, $classname, $time_end);
+                header("Location: index.php?act=addkh&success=1");
+                exit();
             }
             $danhmuc = danhmuc_selectAll();
             $buoihoc = lesson_selectAll();
+            $thongbao = (isset($_GET['success']) && $_GET['success'] == 1) ? 'Thêm thành công' : '';
             include "khoahoc/add.php";
             break;
         case 'listkh':
@@ -55,7 +55,8 @@ if (isset($_GET['act'])) {
                 $key = '';
                 $category = 0;
             }
-            $listkh =  khoahoc_selectAll($key, $category);
+            $teacher_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0;
+            $listkh =  khoahoc_selectAll($key, $category, $teacher_id);
             $danhmuc = danhmuc_selectAll();
             include "khoahoc/list.php";
             break;
@@ -112,48 +113,7 @@ if (isset($_GET['act'])) {
             include "khoahoc/list.php";
             break;
 
-            // Tài khoản
-        case 'dstk':
-            $danhsachtk = hien_thi_khach_hang();
-            include "taikhoan/list.php";
-            break;
-        case 'xoatk':
-            if (isset($_GET['user_id']) && ($_GET['user_id'] > 0)) {
-                $ma_kh = $_GET['user_id'];
-                xoa_khach_hang($ma_kh);
-            }
-            $danhsachtk = hien_thi_khach_hang();
-            include "taikhoan/list.php";
-            break;
-            case 'suatk':
-                if (isset($_GET['user_id']) && ($_GET['user_id'] > 0)) {
-                    $kh = hien_thi_mot_khach_hang($_GET['user_id']);
-                }
-                include "taikhoan/update.php";
-                break;
-            case 'updatetk':
-                if (isset($_POST['capnhat']) && $_POST['capnhat']) {
-                    $user_id= $_POST['user_id'];
-                    $role = $_POST['role'];
-                    edit_taikhoan( $role,$user_id);
-                    $thongbao = "cập nhật thành công";
-                }
-                $danhsachtk = hien_thi_khach_hang();
-                include "taikhoan/list.php";
-                break;
-            // Bình Luận
-        case 'dsbl':
-            $danhsachbl = hien_thi_binh_luan();
-            include "binhluan/list.php";
-            break;
-        case 'xoabl':
-            if (isset($_GET['comment_id']) && ($_GET['comment_id'] > 0)) {
-                $id = $_GET['comment_id'];
-                xoa_binh_luan($id);
-            }
-            $danhsachbl = hien_thi_binh_luan();
-            include "binhluan/list.php";
-            break;
+          
             // Thống kê
         case 'thongke':
             $listsp = load_thong_ke();
@@ -163,14 +123,99 @@ if (isset($_GET['act'])) {
             $listsp = load_thong_ke();
             include "thongke/bieudo.php";
             break;
-            // hoá đơn
-        case 'khoahocdki':
-            $allcourses = get_all_courses_dki();
- 
-            include "khoahocdki/khoahocdki.php";
-            break;
-    
+           
 
+        // Thêm bài học
+       // === Quản lý bài học ===
+case 'addlesson':
+    if (isset($_POST['themmoi']) && $_POST['themmoi']) {
+        $course_id = (int)$_POST['course_id'];
+        $lesson_name = $_POST['lesson_name'];
+        $video_url = $_POST['video_url'];
+        $content = $_POST['content'];
+        $teacher_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0;
+
+        add_lesson($lesson_name, $video_url, $content, $course_id, $teacher_id);
+
+        header("Location: index.php?act=addlesson&course_id=$course_id&success=1");
+        exit();
+    }
+    $courses = get_all_courses();
+    $selected_course_id = isset($_GET['course_id']) ? (int)$_GET['course_id'] : 0;
+    $thongbao = (isset($_GET['success']) && $_GET['success'] == 1) ? "Thêm bài học thành công!" : '';
+    include "lesson/add.php";
+    break;
+
+case 'listlesson':
+    $course_id = isset($_GET['course_id']) ? (int)$_GET['course_id'] : 0;
+    $lessons = get_lessons_by_course($course_id);
+    include "lesson/list.php";
+    break;
+
+case 'xoalesson':
+    if (isset($_GET['lesson_id']) && ($_GET['lesson_id'] > 0)) {
+        $lesson_id = (int)$_GET['lesson_id'];
+        delete_lesson($lesson_id);
+    }
+    $course_id = isset($_GET['course_id']) ? (int)$_GET['course_id'] : 0;
+    $lessons = get_lessons_by_course($course_id);
+    include "lesson/list.php";
+    break;
+
+case 'sualesson':
+    if (isset($_GET['lesson_id']) && $_GET['lesson_id'] > 0) {
+        $lesson_id = (int)$_GET['lesson_id'];
+        $lesson = get_lesson_by_id($lesson_id);
+    }
+    $courses = get_all_courses();
+    include "lesson/update.php";
+    break;
+
+case 'updatelesson':
+    if (isset($_POST['capnhat']) && $_POST['capnhat']) {
+        $lesson_id = (int)$_POST['lesson_id'];
+        $lesson_name = $_POST['lesson_name'];
+        $video_url = $_POST['video_url'];
+        $content = $_POST['content'];
+        $course_id = (int)$_POST['course_id'];
+
+        update_lesson($lesson_id, $lesson_name, $video_url, $content, $course_id);
+
+        $thongbao = "Cập nhật thành công";
+    }
+    $course_id = (int)$_POST['course_id'];
+    $lessons = get_lessons_by_course($course_id);
+    include "lesson/list.php";
+    break;
+
+        // Thêm câu hỏi trắc nghiệm
+        case 'addquiz':
+            $lessons = lesson_selectAll();
+            if (isset($_POST['themmoi']) && $_POST['themmoi']) {
+                $lesson_id = $_POST['lesson_id'];
+                $question = $_POST['question'];
+                $option_a = $_POST['option_a'];
+                $option_b = $_POST['option_b'];
+                $option_c = $_POST['option_c'];
+                $option_d = $_POST['option_d'];
+                $correct_answer = $_POST['correct_answer'];
+                add_quiz($lesson_id, $question, $option_a, $option_b, $option_c, $option_d, $correct_answer);
+                $thongbao = "Thêm câu hỏi thành công!";
+            }
+            include "quiz/add.php";
+            break;
+        // Thêm flashcard
+        case 'addflashcard':
+            $lessons = lesson_selectAll();
+            if (isset($_POST['themmoi']) && $_POST['themmoi']) {
+                $lesson_id = $_POST['lesson_id'];
+                $term = $_POST['term'];
+                $definition = $_POST['definition'];
+                add_flashcard($lesson_id, $term, $definition);
+                $thongbao = "Thêm flashcard thành công!";
+            }
+            include "flashcard/add.php";
+            break;
         default:
             include "home.php";
             break;

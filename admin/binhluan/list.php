@@ -15,13 +15,11 @@
                             <th>Ngày bình luận</th>
                             <th></th>
                         </tr>
-
                         <?php
                         foreach ($danhsachbl as $dsbl) {
                             extract($dsbl);
                             // $suatk = "index.php?act=suatk&ma_kh=".$ma_kh;
                             $xoabl = "index.php?act=xoabl&comment_id=" . $comment_id;
-
                             echo '<tr>
                                     <td>' . $comment_id . '</td>
                                     <td>' . $user_id . '</td>
@@ -29,8 +27,7 @@
                                     <td>' . $content . '</td>
                                     <td>' . $timestamp . '</td>
                                     <td>  
-                        <a href="' . $xoabl . '"><input class="btn_delete_listdm" type="button" value="Xóa"></a>
-                                       
+                        <a href="' . $xoabl . '"><input class="btn_delete_listdm" type="button" value="Xóa"></a>                                 
                                     </td>
                                 </tr>';
                         }

@@ -55,6 +55,7 @@ $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
             <input type="hidden" name="thoigian" value="<?= $thoigian ?>" readonly>
             <input type="hidden" name="time_start" value="<?= $time_start ?>" readonly>
             <input type="hidden" name="user_id" value="<?= $userid ?>" readonly>
+            <input type="hidden" name="course_id" value="<?= isset($_POST['course_id']) ? (int)$_POST['course_id'] : (isset($_GET['course_id']) ? (int)$_GET['course_id'] : '') ?>">
             <input type="hidden" name="time_end" value="<?= $time_end ?>" readonly>
             <!-- Thông tin khóa học -->
             <label for="course_name">Tên khóa học:</label>

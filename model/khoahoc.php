@@ -29,6 +29,9 @@ function khoahoc_selectAll($key, $category_id){
     $sql .=" ORDER BY course_id  DESC";
     return pdo_query($sql);
 }
+function get_last_inserted_course_id() {
+    return pdo_query_value("SELECT MAX(course_id) FROM courses");
+}
 
 function delete_kh($course_id) {
     // Tiếp theo, xóa sản phẩm

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 04, 2025 lúc 09:44 AM
+-- Thời gian đã tạo: Th7 09, 2025 lúc 07:07 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `bills` (
   `bill_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `course_id` int(11) DEFAULT NULL,
   `full_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
@@ -49,12 +50,9 @@ CREATE TABLE `bills` (
 -- Đang đổ dữ liệu cho bảng `bills`
 --
 
-INSERT INTO `bills` (`bill_id`, `user_id`, `full_name`, `email`, `phone`, `course_name`, `course_price`, `pttt`, `instructor`, `classname`, `thoigian`, `time_start`, `time_end`, `timestamp`, `trangthai`) VALUES
-(32, 16, 'hung ', 'hung@gmail.com', '012937273', 'Javascript nâng cao', '12000000', 'Thanh toán Ví VNPAY', 'Trần Văn Hương', 'P208', '10/09/2023', '14:00:00', '16:00:00', '2023-12-12 09:30:58', 'Đã thanh toán'),
-(33, 16, 'hung ', 'hung@gmail.com', '01823623', 'Javascript nâng cao', '12000000', 'Thanh toán tại Trung tâm', 'Trần Văn Hương', 'P208', '10/09/2023', '14:00:00', '16:00:00', '2025-06-23 07:34:08', 'Đã thanh toán'),
-(35, 29, 'Đinh Yang Phiệt ', 'dinhyangphiet1142003@gmail.com', '0962900419', 'Javascript nâng cao', '12000000', 'Thanh toán tại Trung tâm', 'Trần Văn Hương', 'P208', '10/09/2023', '14:00:00', '16:00:00', '2025-06-23 14:26:44', 'Đã thanh toán'),
-(36, 15, 'PHIET ', 'dinhyangphiet1142003@gmail.com', '0962900419', 'Tiếng Anh cơ bản', '6000000', 'Thanh toán tại Trung tâm', 'Lê Nhật Luân', 'P201', '19/04/2025', '19:00:00', '21:00:00', '2025-06-23 14:43:47', 'Đã thanh toán'),
-(40, 29, 'Đinh Yang Phiệt ', 'dinhyangphiet1142003@gmail.com', '0962900419', 'Tiếng Anh nâng cao', '12000000', 'Thanh toán Ví VNPAY', 'Trần Văn Hương', 'P208', '10/09/2025', '14:00:00', '16:00:00', '2025-07-01 18:53:11', 'Đã thanh toán');
+INSERT INTO `bills` (`bill_id`, `user_id`, `course_id`, `full_name`, `email`, `phone`, `course_name`, `course_price`, `pttt`, `instructor`, `classname`, `thoigian`, `time_start`, `time_end`, `timestamp`, `trangthai`) VALUES
+(40, 29, 55, 'Đinh Yang Phiệt ', 'dinhyangphiet1142003@gmail.com', '0962900419', 'Tiếng Anh nâng cao', '12000000', 'Thanh toán Ví VNPAY', 'Trần Văn Hương', 'P208', '10/09/2025', '14:00:00', '16:00:00', '2025-07-08 18:07:44', 'Đã thanh toán'),
+(44, 29, 55, 'Đinh Yang Phiệt', 'dinhyangphiet1142003@gmail.com', '0962900419', 'Tiếng Anh nâng cao', '12000000', 'Thanh toán Ví VNPAY', 'Trần Văn Hương', 'P208', '10/09/2025', '14:00:00', '16:00:00', '2025-07-09 10:31:11', 'Đã thanh toán');
 
 -- --------------------------------------------------------
 
@@ -77,7 +75,13 @@ INSERT INTO `category` (`category_id`, `category_name`) VALUES
 (14, 'Tiếng Hàn cơ bản'),
 (15, 'Tiếng Hàn nâng cao'),
 (16, 'Tiếng Hàn luyện thi TOPIK 1'),
-(17, 'Tiếng Anh luyện thi IELTS');
+(17, 'Tiếng Anh luyện thi IELTS'),
+(18, 'Tiếng Anh cơ bản'),
+(19, 'Tiếng Anh nâng cao'),
+(20, 'Tiếng Hàn cơ bản'),
+(21, 'Tiếng Hàn nâng cao'),
+(22, 'Tiếng Hàn luyện thi TOPIK 1'),
+(23, 'Tiếng Anh luyện thi IELTS');
 
 -- --------------------------------------------------------
 
@@ -150,6 +154,36 @@ CREATE TABLE `course_user` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `course_user`
+--
+
+INSERT INTO `course_user` (`id`, `course_id`, `user_id`) VALUES
+(1, 55, 29);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `flashcards`
+--
+
+CREATE TABLE `flashcards` (
+  `id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `tu_vung` varchar(255) NOT NULL,
+  `nghia` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `flashcards`
+--
+
+INSERT INTO `flashcards` (`id`, `course_id`, `tu_vung`, `nghia`, `created_at`) VALUES
+(4, 55, 'apple', 'quả táo', '2025-07-04 07:49:08'),
+(5, 55, 'book', 'quyển sách', '2025-07-04 07:49:08'),
+(6, 55, 'cat', 'con mèo', '2025-07-04 07:49:08');
+
 -- --------------------------------------------------------
 
 --
@@ -159,17 +193,21 @@ CREATE TABLE `course_user` (
 CREATE TABLE `lessons` (
   `lesson_id` int(11) NOT NULL,
   `lesson_name` varchar(50) NOT NULL,
-  `video_url` varchar(255) DEFAULT NULL
+  `video_url` varchar(255) DEFAULT NULL,
+  `content` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `lessons`
 --
 
-INSERT INTO `lessons` (`lesson_id`, `lesson_name`, `video_url`) VALUES
-(1, 'Buổi sáng', 'https://www.youtube.com/embed/abc123'),
-(2, 'Buổi chiều', NULL),
-(3, 'Buổi tối', NULL);
+INSERT INTO `lessons` (`lesson_id`, `lesson_name`, `video_url`, `content`) VALUES
+(1, 'Buổi sáng', 'https://www.youtube.com/embed/abc123', NULL),
+(2, 'Buổi chiều', NULL, NULL),
+(3, 'Buổi tối', 'https://www.youtube.com/embed/n8xX8M0U3aY', '? **Chủ đề: Kỹ năng viết Email chuyên nghiệp (Writing Professional Emails)**\r\n\r\n1. Cấu trúc Email chuẩn:\r\n   - Greeting (Chào hỏi): Dear Mr./Ms. + Tên\r\n   - Introduction: I am writing to inform/inquire/request...\r\n   - Main content: Trình bày rõ ràng, ngắn gọn\r\n   - Closing: I look forward to hearing from you.\r\n   - Signature: Best regards, + Tên bạn\r\n\r\n2. Từ vựng chuyên dụng:\r\n   - Enquire (v): hỏi thông tin\r\n   - Confirm (v): xác nhận\r\n   - Regarding (prep): liên quan đến\r\n   - Deadline (n): hạn chót\r\n\r\n3. Mẫu email:'),
+(4, 'Buổi sáng', 'https://www.youtube.com/embed/abc123', NULL),
+(5, 'Buổi chiều', NULL, NULL),
+(6, 'Buổi tối', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -182,6 +220,15 @@ CREATE TABLE `question_types` (
   `type_name` varchar(100) NOT NULL,
   `description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `question_types`
+--
+
+INSERT INTO `question_types` (`type_id`, `type_name`, `description`) VALUES
+(1, 'Trắc nghiệm 1 đáp án', 'Chỉ chọn 1 trong 4 đáp án đúng'),
+(2, 'Điền từ', 'Nhập từ vào chỗ trống'),
+(3, 'Đúng/Sai', 'Chọn đúng hoặc sai');
 
 -- --------------------------------------------------------
 
@@ -206,7 +253,8 @@ CREATE TABLE `quizzes` (
 --
 
 INSERT INTO `quizzes` (`quiz_id`, `lesson_id`, `question`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_option`, `type_id`) VALUES
-(1, 1, 'What is the capital of England?', 'London', 'Paris', 'Rome', 'Berlin', 'A', NULL);
+(1, 3, 'What is the capital of England?', 'London', 'Paris', 'Rome', 'Berlin', 'A', NULL),
+(2, 1, 'What is the capital of England?', 'London', 'Paris', 'Rome', 'Berlin', 'A', NULL);
 
 -- --------------------------------------------------------
 
@@ -223,6 +271,13 @@ CREATE TABLE `quiz_results` (
   `answered_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `quiz_results`
+--
+
+INSERT INTO `quiz_results` (`result_id`, `quiz_id`, `user_id`, `selected_option`, `is_correct`, `answered_at`) VALUES
+(1, 1, 29, 'A', 1, '2025-07-09 10:31:48');
+
 -- --------------------------------------------------------
 
 --
@@ -231,8 +286,10 @@ CREATE TABLE `quiz_results` (
 
 CREATE TABLE `teachers` (
   `teacher_id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `full_name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `role` varchar(20) DEFAULT 'teacher',
   `email` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `bio` text DEFAULT NULL
@@ -242,10 +299,10 @@ CREATE TABLE `teachers` (
 -- Đang đổ dữ liệu cho bảng `teachers`
 --
 
-INSERT INTO `teachers` (`teacher_id`, `full_name`, `password`, `email`, `phone`, `bio`) VALUES
-(1, 'Văn A', '1234', 'nguyenvana@example.com', '0912345678', 'Giảng viên tiếng Hàn.'),
-(2, 'Trần Thị B', '', 'tranthib@example.com', '0987654321', 'Đã có 10 năm kinh nghiệm dạy tiếng Anh giao tiếp.'),
-(3, 'Lê Quốc Cường', '', NULL, NULL, 'Giảng viên tiếng Anh.');
+INSERT INTO `teachers` (`teacher_id`, `username`, `full_name`, `password`, `role`, `email`, `phone`, `bio`) VALUES
+(4, 'vana', 'Nguyễn Văn A', '1234', 'teacher', 'vana@example.com', '0901234567', 'Giảng viên tiếng Hàn với 5 năm kinh nghiệm.'),
+(5, 'tranb', 'Trần Thị B', '1234', 'teacher', 'tranb@example.com', '0911223344', 'Giảng viên tiếng Anh giao tiếp.'),
+(6, 'cuonglq', 'Lê Quốc Cường', '1234', 'teacher', NULL, NULL, 'Giảng viên luyện thi TOEIC.');
 
 -- --------------------------------------------------------
 
@@ -269,9 +326,6 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `full_name`, `registration_date`, `role`) VALUES
 (15, 'phiet', '123', 'dinhyangphiet1142003@gmail.com', 'PHIET', '2025-03-05 11:15:01', 'admin'),
-(16, 'hung', '123', 'hung@gmail.com', 'hung', '2025-02-05 11:22:13', 'user'),
-(18, 'truc', '123', 'quynh@gmail.com', 'truc\r\n', '2025-02-08 02:33:13', 'teachers'),
-(28, 'dao1', '123', 'dawo@gmail.com', 'sỹ đạo', '2025-02-12 09:29:00', 'user'),
 (29, 'yangphiet', 'phiet1142003', 'dinhyangphiet1142003@gmail.com', 'Đinh Yang Phiệt', '2025-06-12 04:25:32', 'user');
 
 --
@@ -283,7 +337,8 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `full_name`, `r
 --
 ALTER TABLE `bills`
   ADD PRIMARY KEY (`bill_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `bills_course_fk` (`course_id`);
 
 --
 -- Chỉ mục cho bảng `category`
@@ -317,6 +372,13 @@ ALTER TABLE `course_user`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Chỉ mục cho bảng `flashcards`
+--
+ALTER TABLE `flashcards`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `course_id` (`course_id`);
+
+--
 -- Chỉ mục cho bảng `lessons`
 --
 ALTER TABLE `lessons`
@@ -348,7 +410,8 @@ ALTER TABLE `quiz_results`
 -- Chỉ mục cho bảng `teachers`
 --
 ALTER TABLE `teachers`
-  ADD PRIMARY KEY (`teacher_id`);
+  ADD PRIMARY KEY (`teacher_id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Chỉ mục cho bảng `users`
@@ -364,13 +427,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `bills`
 --
 ALTER TABLE `bills`
-  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT cho bảng `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT cho bảng `comments`
@@ -382,43 +445,49 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT cho bảng `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT cho bảng `course_user`
 --
 ALTER TABLE `course_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `flashcards`
+--
+ALTER TABLE `flashcards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `lessons`
 --
 ALTER TABLE `lessons`
-  MODIFY `lesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `lesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `question_types`
 --
 ALTER TABLE `question_types`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `quizzes`
 --
 ALTER TABLE `quizzes`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `quiz_results`
 --
 ALTER TABLE `quiz_results`
-  MODIFY `result_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
@@ -434,6 +503,7 @@ ALTER TABLE `users`
 -- Các ràng buộc cho bảng `bills`
 --
 ALTER TABLE `bills`
+  ADD CONSTRAINT `bills_course_fk` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `bills_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
@@ -457,6 +527,12 @@ ALTER TABLE `courses`
 ALTER TABLE `course_user`
   ADD CONSTRAINT `course_user_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
   ADD CONSTRAINT `course_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Các ràng buộc cho bảng `flashcards`
+--
+ALTER TABLE `flashcards`
+  ADD CONSTRAINT `flashcards_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `quizzes`

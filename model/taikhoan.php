@@ -15,14 +15,10 @@ function sua_khach_hang($ma_kh, $mat_khau, $ho_ten, $email, $username, $new_pass
         pdo_execute($sql, $ho_ten, $email, $username, $ma_kh);
     }
 }
+// Đăng nhập giáo viên (bảng teachers)
 function check_teacher($username, $password) {
-    $sql = "SELECT * FROM teachers WHERE username = ?";
-    $teacher = pdo_query_one($sql, $username);
-
-    if ($teacher && $teacher['password'] === $password) {
-        return $teacher;
-    }
-    return false;
+    $sql = "SELECT * FROM teachers WHERE username = ? AND password = ? AND role = 'teacher'";
+    return pdo_query_one($sql, $username, $password);
 }
 
 // Xóa khách hàng
@@ -52,18 +48,18 @@ function hien_thi_mot_khach_hang($ma_kh)
     $sql = "SELECT * FROM users WHERE user_id=?";
     return pdo_query_one($sql, $ma_kh);
 }
-function them_khach_hang($username, $full_name, $password, $email)
+function them_khach_hang($username, $full_name, $password, $email, $role = 'user')
 {
     $sql = "INSERT INTO users(password, full_name, username, email, role) VALUES (?, ?, ?, ?, ?)";
-
-    pdo_execute($sql, $password, $full_name, $username, $email, 'user');
+    pdo_execute($sql, $password, $full_name, $username, $email, $role);
 }
 
 // Đăng nhập
-function check_user($password, $username)
+// Đăng nhập học viên hoặc admin (bảng users)
+function check_user($username, $password, $role = 'user')
 {
-    $sql = "SELECT * FROM users WHERE password=? AND username=?";
-    return pdo_query_one($sql, $password, $username);
+    $sql = "SELECT * FROM users WHERE username=? AND password=? AND role=?";
+    return pdo_query_one($sql, $username, $password, $role);
 }
 function kiem_tra_ton_tai($username, $email)
 {

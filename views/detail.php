@@ -85,6 +85,12 @@
 
                     // Fetch details based on $courseId and populate $course array
                     $course = get_course_details($courseId);
+                    // Nếu là giáo viên, chỉ cho xem khoá học của mình
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'teacher' && isset($_SESSION['user_id']) && $course) {
+                        if (!isset($course['teacher_id']) || $course['teacher_id'] != $_SESSION['user_id']) {
+                            $course = null;
+                        }
+                    }
 
                     // Check if $course is not null before proceeding
                     if ($course) :
@@ -98,7 +104,23 @@
                                         <img src="./img/testimonial/testi_avatar.png" alt="image">
                                     </div>
                                     <div class="text">
-                                        <a href="#"><?php echo $course['instructor']; ?></a>
+                                        <?php
+                                        // Hiển thị tên giảng viên an toàn
+                                        $instructor = '';
+                                        if (!empty($course['instructor'])) {
+                                            $instructor = $course['instructor'];
+                                        } elseif (!empty($course['teacher_id'])) {
+                                            include_once dirname(__DIR__) . '/model/teacher.php';
+                                            if (function_exists('get_teacher_name')) {
+                                                $instructor = get_teacher_name($course['teacher_id']);
+                                            } else {
+                                                $instructor = 'Chưa cập nhật';
+                                            }
+                                        } else {
+                                            $instructor = 'Chưa cập nhật';
+                                        }
+                                        ?>
+                                        <a href="#"><?php echo htmlspecialchars($instructor); ?></a>
                                         <p>Giảng viên</p>
                                     </div>
                                 </li>
@@ -196,7 +218,7 @@
                                         ?>
 
                                             <form action="index.php?act=pay" method="post">
-                                                <input type="hidden" name="instructor" value="<?php echo $course['instructor']; ?>">
+                                                <input type="hidden" name="instructor" value="<?php echo htmlspecialchars($instructor); ?>">
                                                 <input type="hidden" name="thoigian" value="<?php echo $course['thoigian']; ?>" >
                                                 <input type="hidden" name="time_start" value="<?php echo $course['time_start']; ?>">
                                                 <input type="hidden" name="time_end" value="<?php echo $course['time_end']; ?>">
@@ -223,7 +245,7 @@
                                             <li class="cat-item cat-item-16"><a href="#">Lớp học</a> <?php echo $course['classname']; ?></li>
                                             <li class="cat-item cat-item-23"><a href="#">Bắt đầu</a> <?php echo $course['time_start']; ?></li>
                                             <li class="cat-item cat-item-18"><a href="#">Kết thúc</a> <?php echo $course['time_end']; ?></li>
-                                            <li class="cat-item cat-item-22"><a href="#">Giáo viên</a> <?php echo $course['instructor']; ?></li>
+                                            <li class="cat-item cat-item-22"><a href="#">Giáo viên</a> <?php echo htmlspecialchars($instructor); ?></li>
                                         </ul>
                                     </section>
                                 </section>

@@ -57,6 +57,21 @@
                 $lessonId = $lesson_id;
                 $lessonName = getLessonName($lessonId);
 
+                // Xử lý tên giảng viên an toàn
+                $instructor = '';
+                if (!empty($kh['instructor'])) {
+                    $instructor = $kh['instructor'];
+                } elseif (!empty($kh['teacher_id'])) {
+                    include_once dirname(__DIR__) . '/model/teacher.php';
+                    if (function_exists('get_teacher_name')) {
+                        $instructor = get_teacher_name($kh['teacher_id']);
+                    } else {
+                        $instructor = 'Chưa cập nhật';
+                    }
+                } else {
+                    $instructor = 'Chưa cập nhật';
+                }
+
                 if (is_array($lessonName)) {
                     $lessonName = implode(', ', $lessonName);
                 }
@@ -104,6 +119,17 @@
                                 <span>BUỔI HỌC</span>
                             </li>
                         </ul>
+                        <form action="index.php?act=pay&course_id=' . $course_id . '" method="post" style="margin-top:10px;">
+                            <input type="hidden" name="course_id" value="' . $course_id . '">
+                            <input type="hidden" name="course_name" value="' . htmlspecialchars($course_name) . '">
+                            <input type="hidden" name="price" value="' . $price . '">
+                            <input type="hidden" name="instructor" value="' . htmlspecialchars($instructor) . '">
+                            <input type="hidden" name="classname" value="' . htmlspecialchars($classname) . '">
+                            <input type="hidden" name="thoigian" value="' . htmlspecialchars($thoigian) . '">
+                            <input type="hidden" name="time_start" value="' . htmlspecialchars($time_start) . '">
+                            <input type="hidden" name="time_end" value="' . htmlspecialchars($time_end) . '">
+                            <button type="submit" class="btn btn-success">Đăng ký khoá học</button>
+                        </form>
 
                  </div>
              </div>
