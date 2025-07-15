@@ -15,17 +15,17 @@ function lesson_selectAll(){
     $sql = "SELECT * FROM lessons ORDER BY lesson_id ASC";
     return pdo_query($sql);
 }
-function khoahoc_selectAll($key, $category_id){
+function khoahoc_selectAll($key, $category_id, $teacher_id = 0){
     $sql = "SELECT * FROM courses WHERE 1";
-    
     if ($category_id > 0) {
         $sql .= " AND category_id ='".$category_id."'";
     }
-
     if ($key != "") {
         $sql .= " AND course_name LIKE '%".$key."%'";
     }
-
+    if ($teacher_id > 0) {
+        $sql .= " AND teacher_id = '".$teacher_id."'";
+    }
     $sql .=" ORDER BY course_id  DESC";
     return pdo_query($sql);
 }

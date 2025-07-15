@@ -40,19 +40,18 @@
           </tr>
 
           <?php
+          include_once __DIR__ . '/../../model/teacher.php';
           foreach ($listkh as $kh) {
             extract($kh);
-           
             $suakh = "index.php?act=suakh&course_id=" . $course_id;
             $xoakh = "index.php?act=xoakh&course_id=" . $course_id;
-
+            // Lấy tên giáo viên theo từng khóa học
+            $teacher_name = isset($teacher_id) ? get_teacher_name($teacher_id) : 'Chưa cập nhật';
             echo '<tr>
-                           
-                          
                             <td>' . $course_name . '</td>
                             <td>' . $description . '</td>
                             <td> <img src="./image/' . $image . '" alt="" width="100px"> </td>
-                            <td>' . $instructor . '</td>
+                            <td>' . htmlspecialchars($teacher_name) . '</td>
                             <td>' . $price . '</td>
                             <td>' . $thoigian. '</td>
                             <td>' . $time_start. '</td>

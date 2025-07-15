@@ -1,3 +1,4 @@
+	
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,27 +22,27 @@
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 <a href="#" class="brand" style="
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    text-decoration: none;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    margin: 0 auto;
-    width: fit-content;
+	display: flex;
+	align-items: center;
+	padding: 10px 20px;
+	text-decoration: none;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	margin: 0 auto;
+	width: fit-content;
 ">
-    <img src="../img/favicon.png" alt="Logo" style="
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        margin-right: 12px;
-    ">
-    <span class="text" style="
-        font-weight: bold;
-        font-size: 20px;
-        color: #333;
-        display: inline-block;
-    ">SOLVIA</span>
+	<img src="../img/favicon.png" alt="Logo" style="
+		width: 70px;
+		height: 70px;
+		border-radius: 50%;
+		margin-right: 12px;
+	">
+	<span class="text" style="
+		font-weight: bold;
+		font-size: 20px;
+		color: #333;
+		display: inline-block;
+	">SOLVIA</span>
 </a>
 
 		
@@ -58,6 +59,12 @@
 				<a href="index.php?act=addkh">
 					<i class='bx bxs-shopping-bag-alt' ></i>
 					<span class="text">KHOÁ HỌC</span>
+				</a>
+			</li>
+					<li class="<?php echo (isset($_GET['act']) && ($_GET['act'] === 'listlesson' || $_GET['act'] === 'addlesson' || $_GET['act'] === 'sualesson')) ? 'active' : ''; ?>">
+				<a href="lesson/list.php">
+					<i class='bx bxs-book-content'></i>
+					<span class="text">BÀI HỌC</span>
 				</a>
 			</li>
 			<li class="<?php echo (!isset($_GET['act']) || $_GET['act'] === 'thongke') ? 'active' : ''; ?>">

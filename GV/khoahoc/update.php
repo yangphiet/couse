@@ -2,8 +2,16 @@
 if(is_array($kh)){
   extract($kh);
 }
-
-
+// Đảm bảo $lessons là mảng để tránh lỗi undefined/null
+if (!isset($lessons) || !is_array($lessons)) {
+  $lessons = [];
+}
+if (!isset($quizzes) || !is_array($quizzes)) {
+  $quizzes = [];
+}
+if (!isset($flashcards) || !is_array($flashcards)) {
+  $flashcards = [];
+}
 ?>
 <main>
 <div class="row2 container mt20">
@@ -41,8 +49,8 @@ if(is_array($kh)){
           </div>
           <!-- Giảng viên  -->
           <div class="row2 mb10 form_content_container">
-          <H1>GIÁNG VIÊN</H1> <br>
-            <input type="text" name="giangvien" value="<?= $instructor?>" placeholder="nhập vào tên giảng viên">
+          <H1>GIẢNG VIÊN</H1> <br>
+            <input type="text" name="giangvien" value="<?= isset($instructor) ? htmlspecialchars($instructor) : '' ?>" placeholder="nhập vào tên giảng viên">
           </div>
           <!-- Giá -->
           <div class="row2 mb10 form_content_container">
@@ -110,46 +118,7 @@ if(is_array($kh)){
                 ?>
             </select>
           </div>
-          <!-- BÀI HỌC -->
-<hr><h2>📚 Cập nhật bài học</h2>
-<div id="lesson-container">
-  <?php foreach ($lessons as $lesson): ?>
-    <div class="lesson-block" style="border: 1px solid #ccc; padding: 15px; margin-top: 10px; border-radius: 8px;">
-      <input type="hidden" name="lesson_id[]" value="<?= $lesson['lesson_id'] ?>">
-      <input type="text" name="lesson_title[]" class="form-control" value="<?= $lesson['title'] ?>" placeholder="Tiêu đề bài học">
-      <input type="text" name="lesson_video[]" class="form-control" value="<?= $lesson['video_url'] ?>" placeholder="Video URL (https://...)">
-      <textarea name="lesson_content[]" rows="3" class="form-control" placeholder="Nội dung bài học"><?= $lesson['content'] ?></textarea>
-    </div>
-  <?php endforeach; ?>
-</div>
-
-<!-- TRẮC NGHIỆM -->
-<hr><h2>🧠 Cập nhật câu hỏi trắc nghiệm</h2>
-<div id="quiz-container">
-  <?php foreach ($quizzes as $quiz): ?>
-    <div class="quiz-block" style="border: 1px solid #ccc; padding: 15px; margin-top: 10px; border-radius: 8px;">
-      <input type="hidden" name="quiz_id[]" value="<?= $quiz['quiz_id'] ?>">
-      <input type="text" name="quiz_question[]" class="form-control" value="<?= $quiz['question'] ?>" placeholder="Câu hỏi">
-      <input type="text" name="quiz_a[]" class="form-control" value="<?= $quiz['option_a'] ?>" placeholder="Đáp án A">
-      <input type="text" name="quiz_b[]" class="form-control" value="<?= $quiz['option_b'] ?>" placeholder="Đáp án B">
-      <input type="text" name="quiz_c[]" class="form-control" value="<?= $quiz['option_c'] ?>" placeholder="Đáp án C">
-      <input type="text" name="quiz_d[]" class="form-control" value="<?= $quiz['option_d'] ?>" placeholder="Đáp án D">
-      <input type="text" name="quiz_answer[]" class="form-control" value="<?= $quiz['correct_answer'] ?>" placeholder="Đáp án đúng (A/B/C/D)">
-    </div>
-  <?php endforeach; ?>
-</div>
-
-<!-- FLASHCARD -->
-<hr><h2>📘 Cập nhật flashcard</h2>
-<div id="flashcard-container">
-  <?php foreach ($flashcards as $fc): ?>
-    <div class="flashcard-block" style="border: 1px solid #ccc; padding: 15px; margin-top: 10px; border-radius: 8px;">
-      <input type="hidden" name="fc_id[]" value="<?= $fc['flashcard_id'] ?>">
-      <input type="text" name="fc_term[]" class="form-control" value="<?= $fc['term'] ?>" placeholder="Từ vựng">
-      <input type="text" name="fc_definition[]" class="form-control" value="<?= $fc['definition'] ?>" placeholder="Định nghĩa">
-    </div>
-  <?php endforeach; ?>
-</div>
+          
 
           
           <div class="row mb10 btn_adddm">

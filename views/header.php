@@ -61,7 +61,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                                 if ($role === "user") {
                                                     echo '<li><a href="index.php?act=khdadangki">Khóa học đã đăng ký</a></li>';
                                                 } elseif ($role === "teacher") {
-                                                    echo '<li><a href="http://localhost/duan1/GV/">Trang giảng viên</a></li>';
+                                                    echo '<li><a href="GV/index.php">Trang giảng viên</a></li>';
                                                 } elseif ($role === "admin") {
                                                     echo '<li><a href="http://localhost/duan1/admin/">Trang quản trị</a></li>';
                                                 }
