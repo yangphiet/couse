@@ -5,6 +5,7 @@ function get_lesson_files($lesson_id) {
     $sql = "SELECT * FROM lesson_files WHERE lesson_id = ? ORDER BY uploaded_at DESC";
     return pdo_query($sql, $lesson_id);
 }
+
 // Thêm file tài liệu/video cho bài học
 function add_lesson_file($lesson_id, $file_name, $file_path, $file_type) {
     $sql = "INSERT INTO lesson_files (lesson_id, file_name, file_path, file_type) VALUES (?, ?, ?, ?)";
@@ -29,6 +30,21 @@ function add_lesson($course_id, $title, $video_url, $content) {
     pdo_execute($sql, $course_id, $title, $video_url, $content);
     global $pdo;
     return $pdo->lastInsertId();
+}
+
+function get_lesson_by_id($lesson_id) {
+    $sql = "SELECT * FROM lessons WHERE lesson_id = ?";
+    return pdo_query_one($sql, $lesson_id);
+}
+
+function update_lesson($lesson_id, $course_id, $title, $video_url, $content) {
+    $sql = "UPDATE lessons SET course_id = ?, title = ?, video_url = ?, content = ? WHERE lesson_id = ?";
+    pdo_execute($sql, $course_id, $title, $video_url, $content, $lesson_id);
+}
+
+function delete_lesson($lesson_id) {
+    $sql = "DELETE FROM lessons WHERE lesson_id = ?";
+    pdo_execute($sql, $lesson_id);
 }
 
 ?>
